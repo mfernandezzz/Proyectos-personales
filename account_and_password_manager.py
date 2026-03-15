@@ -7,18 +7,21 @@ caracteres.extend(simbolos)
 caracteres.extend(list(string.ascii_lowercase)) #letras en minuscula
 caracteres.extend(list(string.ascii_uppercase)) #letras en mayuscula
 caracteres.extend(numeros)
+
 #Funcion que genera una contraseña
-def password(caracteres):
-    passwordL, passwordF = [], ''
-    char = int(input('Ingrese la cantidad de caracteres que tendra tu contraseña, minimo ocho: '))
-    while char < 8: #el bucle se repetira hasta que el usuario ingrese un numero igual o mayor a ocho
-        print('Tu contraseña debe tener como minimo 8 caracteres.')
-        char = int(input('Ingrese la cantidad de caracteres que tendra tu contraseña, minimo ocho: '))
-    while len(passwordL) < char:
-        add = random.choice(caracteres) #se toman elementos al azar de la lista caracteres
-        passwordL.append(add) #se almacenan dichos elementos en passwordL
-    passwordF = ''.join(passwordL) #se toman los elementos de la lista passwordL para generar el string final
-    return passwordF #se devuelve la contraseña
+def password():
+    password = '' #se define una lista y un string, ambos vacios
+
+    num_char = input('ingrese la cantidad de caracteres que tendra la contraseña (min 8): ')
+    while not(num_char.isdigit()) or (int(num_char) < 8): #se comprueba que lo introducido por el usuario sea un valor valido
+        print('Valor incorrecto. Ingrese nuvamente.') #mensaje de error
+        num_char = input('ingrese la cantidad de caracteres que tendra la contraseña (min 8): ')
+
+    for c in range(int(num_char)): #se itera en el rango de valor de num_char
+        c = random.choice(caracteres) #la variable de iteracion toma un valor aleatorio de la lista caracteres
+        password += c #se crea el string con la contraseña final
+
+    return password
 
 #Gestor de Cuentas y Contraseñas
 #Funcion para agregar una cuenta con su respectiva contraseña
@@ -67,28 +70,34 @@ def gestorCuentasContraseñas():
         print('4. Mostrar cuentas y sus contraseñas')
         print('5. Modificar contraseña')
         print('6. Salir del gestor')
-        opcion = int(input('Opcion: ')) #el usuario introduce una opcion
-        if opcion == 1:
+
+        opcion = input('Opcion: ') #el usuario introduce una opcion
+        while not(opcion.isdigit()):
+            print('Valor incorrecto. Ingrese nuevamente.')
+            opcion = input('Opcion: ')
+
+        if int(opcion) == 1:
             cuenta = str.upper(input('Ingrese el nombre de la cuenta: '))
-            contraseña = password(caracteres) #se genera una nueva contraseña para la nueva cuenta
+            contraseña = password() #se genera una nueva contraseña para la nueva cuenta
             agregar(gestor, cuenta, contraseña)
-        elif opcion == 2:
+        elif int(opcion) == 2:
             cuenta = str.upper(input('Ingrese la cuenta que desea eliminar: '))
             eliminar(gestor, cuenta)
-        elif opcion == 3:
+        elif int(opcion) == 3:
             cuenta = str.upper(input('Ingrese la cuenta que desea buscar: '))
             buscar(gestor, cuenta)
-        elif opcion == 4:
+        elif int(opcion) == 4:
             mostrar(gestor)
-        elif opcion == 5:
+        elif int(opcion) == 5:
             cuenta = str.upper(input('Ingrese la cuenta para modificar su contraseña: '))
-            nuevaContraseña = password(caracteres) #se genera una nueva contraseña para la cuenta modificada
+            nuevaContraseña = password() #se genera una nueva contraseña para la cuenta modificada
             modificarContraseña(gestor, cuenta, nuevaContraseña)
-        elif opcion == 6:
+        elif int(opcion) == 6:
             print('Saliendo del Gestor de Cuentas y Contraseñas')
             break #el bucle finaliza
         else:
             print('Opcion incorrecta')
+            
     return ''
 
 print(gestorCuentasContraseñas())
