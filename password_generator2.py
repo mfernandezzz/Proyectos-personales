@@ -12,11 +12,16 @@ items = [ #posibles caracteres que tendra la contraseña
     'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 
     'Y', 'Z'
 ]
-lenght = int(input('Cantidad de caracteres que tendra la contraseña: '))
+lenght = input('Cantidad de caracteres que tendra la contraseña: ')
+while not(lenght.isdigit()) or (int(lenght) < 8):
+        print('Valor incorrecto. Ingrese nuvamente.')
+        lenght = input('ingrese la cantidad de caracteres que tendra la contraseña (min 8): ')
+
 def generate(lenght):
-    password = ''
-    for i in range(lenght): 
+    password = '' #variable que almacenara el string con la contraseña final
+    for i in range(int(lenght)): 
         i = random.choice(items) #se obtiene los caracteres de la contraseña
         password += i #se agregan los caracteres al string final
     return password
+
 print(generate(lenght))
